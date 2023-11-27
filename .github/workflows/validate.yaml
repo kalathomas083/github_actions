@@ -42,6 +42,7 @@ jobs:
         echo "Output from Python Script: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}"
   validate_files:
     needs: check-changes
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
