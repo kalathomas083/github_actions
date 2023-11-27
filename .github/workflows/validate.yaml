@@ -1,0 +1,38 @@
+name: Check Changes
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get changed files
+      id: changed-files
+      run: |
+        CHANGED_FILES=$(git diff --name-only origin/main..${{ github.ref_name }})
+        echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
+
+    - name: Display changed files
+      run: |
+        echo "Changed files:"
+        echo "${{ steps.changed-files.outputs.changed_files }}"
+
+    - name: Get Migrations Files Changes List
+      id: python_changed_list
+      run: |
+        JSON_OUTPUT=$(python3 src/changed_files_matrix.py $CHANGED_FILES)
+        echo "JSON_OUTPUT=${JSON_OUTPUT}" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        CHANGED_FILES: ${{ steps.changed-files.outputs.CHANGED_FILES }}
+
+    - name: Display Output
+      run: |
+        echo "Output from Python Script: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}"
