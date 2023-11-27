@@ -16,8 +16,9 @@ jobs:
     - name: Get changed files
       id: changed-files
       run: |
-        # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
-        CHANGED_FILES=($(git diff --name-only ${{ github.ref_name }} main}))
+        git fetch origin main
+        git fetch origin ${GITHUB_HEAD_REF}
+        CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
     - name: Display changed files
