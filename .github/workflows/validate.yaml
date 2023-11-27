@@ -45,5 +45,7 @@ jobs:
     strategy:
       matrix:
         ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
-    run: |
-      echo ${{ matrix.folder_location }}
+    steps:
+      - name: check_variable
+        run: |
+          echo ${{ matrix.folder_location }}
