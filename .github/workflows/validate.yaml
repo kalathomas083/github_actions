@@ -8,6 +8,8 @@ on:
 jobs:
   check-changes:
     runs-on: ubuntu-latest
+    outputs:
+      matrix_output: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}
 
     steps:
     - name: Checkout code
@@ -38,3 +40,10 @@ jobs:
     - name: Display Output
       run: |
         echo "Output from Python Script: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}"
+  validate_files:
+    needs: check-changes
+    strategy:
+      matrix:
+        ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+    run: |
+      echo ${{ matrix.folder_location }}
