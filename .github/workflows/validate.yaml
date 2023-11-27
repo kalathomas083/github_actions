@@ -17,7 +17,7 @@ jobs:
       id: changed-files
       run: |
         # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
-        CHANGED_FILES=($(git diff --name-only ${{ github.event.before }} ${{ github.sha }}))
+        CHANGED_FILES=($(git diff --name-only ${{ github.ref_name }} main}))
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
     - name: Display changed files
