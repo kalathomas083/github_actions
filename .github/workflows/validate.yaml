@@ -29,7 +29,7 @@ jobs:
     - name: Get Migrations Files Changes List
       id: python_changed_list
       run: |
-        JSON_OUTPUT=$(python3 src/changed_files_matrix.py $CHANGED_FILES)
+        JSON_OUTPUT=$(python3 .github/src/changed_files_matrix.py $CHANGED_FILES)
         echo "JSON_OUTPUT=${JSON_OUTPUT}" >> $GITHUB_OUTPUT
       shell: bash
       env:
