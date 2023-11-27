@@ -7,8 +7,8 @@ changed_files = list(bash_output.upper().split(" "))
 
 include_dictionary = { "include": [] }
 
+db_schema_set = set()
 for item in changed_files:
-    db_schema_set = set()
     if 'MIGRATIONS/' in item:
         db_name = item.split("/")[-3]
         schema_name = item.split("/")[-2]
