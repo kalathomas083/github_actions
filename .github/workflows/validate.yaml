@@ -1,0 +1,130 @@
+name: Check Changes
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  check-changes:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_output: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get changed files
+      id: changed-files
+      run: |
+        git fetch origin main
+        git fetch origin ${GITHUB_HEAD_REF}
+        CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
+        if [[ -z "$CHANGED_FILES" ]]
+        then
+          echo "CHANGED_FILES is empty"
+          THIS_COMMIT=$(git rev-parse @)
+          PREV_COMMIT=$(git rev-parse @~)
+          
+          CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
+        fi
+        echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
+
+    - name: Display changed files
+      run: |
+        echo "Changed files:"
+        echo "${{ steps.changed-files.outputs.changed_files }}"
+
+    - name: Get Migrations Files Changes List
+      id: python_changed_list
+      run: |
+        JSON_OUTPUT=$(python3 .github/src/changed_files_matrix.py $CHANGED_FILES)
+        echo "JSON_OUTPUT=${JSON_OUTPUT}" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        CHANGED_FILES: ${{ steps.changed-files.outputs.CHANGED_FILES }}
+
+    - name: Display Output
+      run: |
+        echo "Output from Python Script: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}"
+  validate_files:
+    name: Validate Flyway tables for migration
+    needs: check-changes
+    runs-on: ubuntu-latest
+    environment: VALIDATE
+    strategy:
+      matrix:
+        ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+    steps:
+      - name: Check Inputs
+        id: check_variable
+        run: |
+          echo ${{ matrix.folder_location }}
+          echo ${{ matrix.db_name }}
+          echo ${{ matrix.schema_name }}
+          echo ${{ secrets.SF_ACCOUNT }}
+          echo ${{ vars.MIGRATION_TYPE }}
+  migrate_files:
+    if:  ${{ github.ref_name == 'main' }}
+    name: Migrate files to Snowflake 
+    needs: 
+      - check-changes
+      - validate_files
+    runs-on: ubuntu-latest
+    environment: MIGRATE
+    strategy:
+      matrix:
+        ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+    
+    steps:
+      - name: Check Inputs
+        id: check_variable
+        run: |
+          echo ${{ matrix.folder_location }}
+          echo ${{ matrix.db_name }}
+          echo ${{ matrix.schema_name }}
+          echo ${{ secrets.SF_ACCOUNT }}
+          echo validate
+          echo ${{ github.ref_name }}
+    
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: check_action
+        uses: ./.github/actions/validate_action
+        with:
+          target_folder: ${{ matrix.folder_location }}
+          db_name: ${{ matrix.db_name }}
+          schema_name: ${{ matrix.schema_name }}
+          sf_password: ${{ secrets.SF_PASSWORD }}
+          sf_account: ${{ secrets.SF_ACCOUNT }}
+          type: ${{ vars.MIGRATION_TYPE }}
+          sf_user: user
+
+  permissions_sql:
+    if:  ${{ github.ref_name == 'main' }}
+    name: Run permissions 
+    needs: 
+      - migrate_files
+    runs-on: ubuntu-latest
+    environment: MIGRATE
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Permissions 
+        id: run_permissions
+        uses: ./.github/actions/validate_action
+        with:
+          target_folder: ${{ matrix.folder_location }}
+          db_name: ${{ matrix.db_name }}
+          schema_name: ${{ matrix.schema_name }}
+          sf_password: ${{ secrets.SF_PASSWORD }}
+          sf_account: ${{ secrets.SF_ACCOUNT }}
+          type: ${{ vars.MIGRATION_TYPE }}
+          sf_user: user
+
+
