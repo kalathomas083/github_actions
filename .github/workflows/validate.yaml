@@ -15,6 +15,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Get changed files
       id: changed-files
@@ -25,10 +27,7 @@ jobs:
         if [[ -z "$CHANGED_FILES" ]]
         then
           echo "CHANGED_FILES is empty"
-          THIS_COMMIT=$(git rev-parse @)
-          PREV_COMMIT=$(git rev-parse @~)
-          
-          CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
+          CHANGED_FILES=($(git diff --name-only ${{github.event.before}} ${{github.sha}}))
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
