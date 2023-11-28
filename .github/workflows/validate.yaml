@@ -24,7 +24,7 @@ jobs:
         # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
         if [[ -n "$CHANGED_FILES" ]]
         then
-          echo "Null"
+          echo CHANGED_FILES="There is no string"
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
