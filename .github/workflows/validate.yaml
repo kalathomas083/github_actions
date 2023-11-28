@@ -54,4 +54,4 @@ jobs:
           echo ${{ matrix.db_name }}
           echo ${{ matrix.schema_name }}
           echo ${{ secrets.SF_ACCOUNT }}
-          echo ${{ env.MIGRATION_TYPE }}
+          echo ${{ vars.MIGRATION_TYPE }}
