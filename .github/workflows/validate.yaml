@@ -29,8 +29,8 @@ jobs:
           echo "CHANGED_FILES is empty"
           # THIS_COMMIT=$(git rev-parse @)
           export THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
-          echo '${THIS_COMMIT}'
-          echo "${THIS_COMMIT[0]}"
+          echo ${{github.event.before}}
+          echo ${{github.sha}}
           echo "${THIS_COMMIT[1]}"
           # PREV_COMMIT=$(git rev-parse @^)
           
