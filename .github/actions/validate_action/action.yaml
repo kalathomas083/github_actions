@@ -1,0 +1,50 @@
+name: "Flyway Deploy"
+description: "Validate or deploy migrations with Flyway"
+inputs:
+  type:
+    required: true
+    type: string
+    default: validate
+  target_folder:
+    required: true
+    type: string
+  schema_name:
+    required: true
+    type: string
+  db_name:
+    required: true
+    type: string
+  sf_user:
+    required: true
+    type: string
+  sf_password:
+    required: true
+    type: string
+  sf_role:
+    required: true
+    type: string
+    default: EDA_DEPLOY_ROLE
+  sf_account:
+    required: true
+    type: string
+  docker_image:
+    required: true
+    type: string
+    description: "Target docker image version"
+    default: "flyway/flyway:9.3.0"
+
+runs:
+  using: composite
+  steps:
+    - name: check_inputs
+      run: |
+        echo ${{ inputs.target_folder }}
+        echo ${{ inputs.db_name }}
+        echo ${{ inputs.schema_name }}
+        echo ${{ inputs.sf_password }}
+        echo ${{ inputs.sf_account }}
+        echo ${{ inputs.type }}
+        echo ${{ inputs.sf_role }}
+        echo ${{ inputs.docker_image }}
+        echo ${{ inputs.sf_user }}
+      shell: bash
