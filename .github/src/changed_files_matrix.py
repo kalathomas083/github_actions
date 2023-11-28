@@ -24,6 +24,8 @@ for item in db_schema_list:
     schema_name = item.split("/")[1]
     add_dict = {
         "folder_location": folder_location
+        , "db_name": db_name
+        , "schema_name": schema_name
     }
 
     include_dictionary["include"].append(add_dict)
