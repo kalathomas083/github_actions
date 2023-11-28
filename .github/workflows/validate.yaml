@@ -56,7 +56,7 @@ jobs:
           echo ${{ secrets.SF_ACCOUNT }}
           echo ${{ vars.MIGRATION_TYPE }}
   migrate_files:
-    if:  ${{ github.ref_name == 'main' }}
+    # if:  ${{ github.ref_name == 'main' }}
     needs: 
       - check-changes
       - validate_files
