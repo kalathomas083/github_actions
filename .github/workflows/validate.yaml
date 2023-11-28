@@ -65,7 +65,9 @@ jobs:
     strategy:
       matrix:
         ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+    
     steps:
+      
       - name: check_variable
         run: |
           echo ${{ matrix.folder_location }}
@@ -74,6 +76,10 @@ jobs:
           echo ${{ secrets.SF_ACCOUNT }}
           echo ${{ vars.MIGRATION_TYPE }}
           echo ${{ github.ref_name }}
+    
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: check_action
         uses: ./.github/actions/validate_action
         with:
