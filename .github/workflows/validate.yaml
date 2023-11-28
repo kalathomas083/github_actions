@@ -21,15 +21,16 @@ jobs:
     - name: Get changed files
       id: changed-files
       run: |
-        git fetch origin/main
+        git fetch origin main
         git fetch origin ${GITHUB_HEAD_REF}
         # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
         if [[ -z "$CHANGED_FILES" ]]
         then
           echo "CHANGED_FILES is empty"
-          THIS_COMMIT=$(git rev-parse @)
+          # THIS_COMMIT=$(git rev-parse @)
+          THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
           echo $THIS_COMMIT
-          PREV_COMMIT=$(git rev-parse @^)
+          # PREV_COMMIT=$(git rev-parse @^)
           
           CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
         fi
