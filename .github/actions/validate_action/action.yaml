@@ -29,11 +29,12 @@ inputs:
 
 runs:
   using: composite
-  - name: check_vars
-    run: |
-      echo ${{ matrix.folder_location }}
-      echo ${{ matrix.db_name }}
-      echo ${{ matrix.schema_name }}
-      echo ${{ secrets.SF_ACCOUNT }}
-      echo ${{ vars.MIGRATION_TYPE }}
-      echo ${{ github.ref_name }}
+  steps:
+    - name: check_vars
+      run: |
+        echo ${{ matrix.folder_location }}
+        echo ${{ matrix.db_name }}
+        echo ${{ matrix.schema_name }}
+        echo ${{ secrets.SF_ACCOUNT }}
+        echo ${{ vars.MIGRATION_TYPE }}
+        echo ${{ github.ref_name }}
