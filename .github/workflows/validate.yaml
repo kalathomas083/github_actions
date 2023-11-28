@@ -28,7 +28,7 @@ jobs:
         then
           echo "CHANGED_FILES is empty"
           # THIS_COMMIT=$(git rev-parse @)
-          CHANGED_FILES=($(git diff --name-only ${{github.event.before}}..${{github.sha}}))
+          CHANGED_FILES=($(git diff --name-only ${{github.event.before}} ${{github.sha}}))
           export THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
           echo ${{github.event.before}}
           echo ${{github.sha}}
