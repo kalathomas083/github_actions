@@ -22,7 +22,7 @@ jobs:
         git fetch origin main
         git fetch origin ${GITHUB_HEAD_REF}
         # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
-        if [[ -n "$CHANGED_FILES" ]]
+        if [[ -z "$CHANGED_FILES" ]]
         then
           CHANGED_FILES="There is no string"
           echo $CHANGED_FILES
