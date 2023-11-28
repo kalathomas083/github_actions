@@ -43,6 +43,7 @@ jobs:
   validate_files:
     needs: check-changes
     runs-on: ubuntu-latest
+    environment: VALIDATE
     strategy:
       matrix:
         ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
@@ -50,3 +51,4 @@ jobs:
       - name: check_variable
         run: |
           echo ${{ matrix.folder_location }}
+          echo ${{ secrets.SF_ACCOUNT }}
