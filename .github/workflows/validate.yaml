@@ -28,11 +28,8 @@ jobs:
         then
           echo "CHANGED_FILES is empty"
           # THIS_COMMIT=$(git rev-parse @)
-          THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
-          echo '${THIS_COMMIT[*]}'
-          echo '${THIS_COMMIT[0]}'
-          echo '${THIS_COMMIT[1]}'
-          echo "${THIS_COMMIT[*]}"
+          export THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
+          echo '${THIS_COMMIT}'
           echo "${THIS_COMMIT[0]}"
           echo "${THIS_COMMIT[1]}"
           # PREV_COMMIT=$(git rev-parse @^)
