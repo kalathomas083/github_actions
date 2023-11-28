@@ -24,8 +24,10 @@ jobs:
         # CHANGED_FILES=($(git diff --name-only origin/main..${{ github.ref_name }}))
         if [[ -z "$CHANGED_FILES" ]]
         then
-          CHANGED_FILES="There is no string"
-          echo $CHANGED_FILES
+          echo "CHANGED_FILES is empty"
+          # THIS_COMMIT=$(git rev-parse @)
+          # PREV_COMMIT=$(git rev-parse @~)
+          CHANGED_FILES=($(git diff --name-only HEAD..HEAD~1))
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
