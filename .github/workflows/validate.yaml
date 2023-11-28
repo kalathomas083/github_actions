@@ -28,13 +28,13 @@ jobs:
         then
           echo "CHANGED_FILES is empty"
           # THIS_COMMIT=$(git rev-parse @)
+          CHANGED_FILES=($(git diff --name-only ${{github.event.before}}..${{github.sha}}))
           export THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
           echo ${{github.event.before}}
           echo ${{github.sha}}
           echo "${THIS_COMMIT[1]}"
           # PREV_COMMIT=$(git rev-parse @^)
           
-          CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
