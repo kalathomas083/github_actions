@@ -29,7 +29,7 @@ jobs:
           echo "CHANGED_FILES is empty"
           # THIS_COMMIT=$(git rev-parse @)
           THIS_COMMIT=$(git log --pretty=format:'%H' -n 2)
-          echo $THIS_COMMIT
+          echo ${THIS_COMMIT[*]}
           # PREV_COMMIT=$(git rev-parse @^)
           
           CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
