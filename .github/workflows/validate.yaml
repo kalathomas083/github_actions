@@ -25,9 +25,9 @@ jobs:
         if [[ -z "$CHANGED_FILES" ]]
         then
           echo "CHANGED_FILES is empty"
-          # THIS_COMMIT=$(git rev-parse @)
-          # PREV_COMMIT=$(git rev-parse @~)
-          CHANGED_FILES=($(git diff --name-only HEAD..HEAD~1))
+          THIS_COMMIT=$(git rev-parse @)
+          PREV_COMMIT=$(git rev-parse @~)
+          CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
