@@ -38,3 +38,4 @@ runs:
         echo ${{ secrets.SF_ACCOUNT }}
         echo ${{ vars.MIGRATION_TYPE }}
         echo ${{ github.ref_name }}
+      shell: bash
