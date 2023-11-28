@@ -56,7 +56,9 @@ jobs:
           echo ${{ secrets.SF_ACCOUNT }}
           echo ${{ vars.MIGRATION_TYPE }}
   migrate_files:
-    needs: validate_files
+    needs: 
+      - check-changes
+      - validate_files
     runs-on: ubuntu-latest
     environment: MIGRATE
     strategy:
