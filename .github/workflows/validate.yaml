@@ -55,3 +55,20 @@ jobs:
           echo ${{ matrix.schema_name }}
           echo ${{ secrets.SF_ACCOUNT }}
           echo ${{ vars.MIGRATION_TYPE }}
+  migrate_files:
+    needs: validate_files
+    runs-on: ubuntu-latest
+    environment: MIGRATE
+    strategy:
+      matrix:
+        ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+    steps:
+      - name: check_variable
+        run: |
+          echo ${{ matrix.folder_location }}
+          echo ${{ matrix.db_name }}
+          echo ${{ matrix.schema_name }}
+          echo ${{ secrets.SF_ACCOUNT }}
+          echo ${{ vars.MIGRATION_TYPE }}
+          echo ${{ github.ref_name }}
+
