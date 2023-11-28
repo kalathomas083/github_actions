@@ -1,0 +1,39 @@
+name: "Validate Action"
+inputs:
+  type:
+    required: true
+    type: string
+    default: validate
+  target_folder:
+    required: true
+    type: string
+  schema_name:
+    required: true
+    type: string
+  db_name:
+    required: true
+    type: string
+  sf_user:
+    required: true
+    type: string
+  sf_password:
+    required: true
+    type: string
+  sf_role:
+    required: true
+    type: string
+    default: EDA_DEPLOY_ROLE
+  sf_account:
+    required: true
+    type: string
+
+runs:
+  using: composite
+  - name: check_vars
+    run: |
+      echo ${{ matrix.folder_location }}
+      echo ${{ matrix.db_name }}
+      echo ${{ matrix.schema_name }}
+      echo ${{ secrets.SF_ACCOUNT }}
+      echo ${{ vars.MIGRATION_TYPE }}
+      echo ${{ github.ref_name }}

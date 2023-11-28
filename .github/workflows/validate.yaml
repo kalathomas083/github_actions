@@ -74,4 +74,15 @@ jobs:
           echo ${{ secrets.SF_ACCOUNT }}
           echo ${{ vars.MIGRATION_TYPE }}
           echo ${{ github.ref_name }}
+      - name: check_action
+        uses: ./.github/actions/validate_action
+        with:
+          target_folder: ${{ matrix.folder_location }}
+          db_name: ${{ matrix.db_name }}
+          schema_name: ${{ matrix.schema_name }}
+          sf_password: ${{ secrets.SF_PASSWORD }}
+          sf_account: ${{ secrets.SF_ACCOUNT }}
+          type: ${{ vars.MIGRATION_TYPE }}
+          sf_user: user
+
 
