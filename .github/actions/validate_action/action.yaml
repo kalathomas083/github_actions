@@ -32,10 +32,11 @@ runs:
   steps:
     - name: check_vars
       run: |
-        echo ${{ matrix.folder_location }}
-        echo ${{ matrix.db_name }}
-        echo ${{ matrix.schema_name }}
-        echo ${{ secrets.SF_ACCOUNT }}
-        echo ${{ vars.MIGRATION_TYPE }}
-        echo ${{ github.ref_name }}
+        echo ${{ inputs.target_folder }}
+        echo ${{ inputs.db_name }}
+        echo ${{ inputs.schema_name }}
+        echo ${{ inputs.sf_password }}
+        echo ${{ inputs.sf_account }}
+        echo ${{ inputs.type }}
+        echo ${{ inputs.sf_role }}
       shell: bash
