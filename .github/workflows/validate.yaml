@@ -25,10 +25,7 @@ jobs:
         if [[ -z "$CHANGED_FILES" ]]
         then
           echo "CHANGED_FILES is empty"
-          THIS_COMMIT=$(git rev-parse @)
-          PREV_COMMIT=$(git rev-parse @~)
-          
-          CHANGED_FILES=($(git diff --name-only $THIS_COMMIT..$PREV_COMMIT))
+          CHANGED_FILES=($(git diff --name-only ${{github.event.before}} ${{github.sha}}))
         fi
         echo "changed_files=${CHANGED_FILES[*]}" >> $GITHUB_OUTPUT
 
@@ -49,23 +46,19 @@ jobs:
     - name: Display Output
       run: |
         echo "Output from Python Script: ${{ steps.python_changed_list.outputs.JSON_OUTPUT }}"
-  validate_files:
-    name: Validate Flyway tables for migration
-    needs: check-changes
-    runs-on: ubuntu-latest
-    environment: VALIDATE
-    strategy:
-      matrix:
-        ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
-    steps:
-      - name: Check Inputs
-        id: check_variable
-        run: |
-          echo ${{ matrix.folder_location }}
-          echo ${{ matrix.db_name }}
-          echo ${{ matrix.schema_name }}
-          echo ${{ secrets.SF_ACCOUNT }}
-          echo ${{ vars.MIGRATION_TYPE }}
+  # validate_files:
+  #   name: Validate Flyway tables for migration
+  #   needs: check-changes
+  #   runs-on: ubuntu-latest
+  #   environment: MIGRATE
+  #   strategy:
+  #     matrix:
+  #       ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
+  #   steps:
+  #     - name: Check Inputs
+  #       id: check_variable
+  #       run: |
+  #         VAR = "VAR"
   migrate_files:
     if:  ${{ github.ref_name == 'main' }}
     name: Migrate files to Snowflake 
@@ -82,12 +75,7 @@ jobs:
       - name: Check Inputs
         id: check_variable
         run: |
-          echo ${{ matrix.folder_location }}
-          echo ${{ matrix.db_name }}
-          echo ${{ matrix.schema_name }}
-          echo ${{ secrets.SF_ACCOUNT }}
-          echo validate
-          echo ${{ github.ref_name }}
+          VAR = "VAR"
     
       - name: Checkout code
         uses: actions/checkout@v2
