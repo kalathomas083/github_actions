@@ -52,7 +52,7 @@ jobs:
     name: Validate Flyway tables for migration
     needs: check-changes
     runs-on: ubuntu-latest
-    environment: VALIDATE
+    environment: MIGRATE
     strategy:
       matrix:
         ${{ fromJson(needs.check-changes.outputs.matrix_output) }}
