@@ -60,11 +60,7 @@ jobs:
       - name: Check Inputs
         id: check_variable
         run: |
-          echo ${{ matrix.folder_location }}
-          echo ${{ matrix.db_name }}
-          echo ${{ matrix.schema_name }}
-          echo ${{ secrets.SF_ACCOUNT }}
-          echo ${{ vars.MIGRATION_TYPE }}
+          VAR = "VAR"
   migrate_files:
     if:  ${{ github.ref_name == 'main' }}
     name: Migrate files to Snowflake 
