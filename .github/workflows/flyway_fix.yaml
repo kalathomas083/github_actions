@@ -15,7 +15,7 @@ jobs:
   flyway-repair:
     name: Flyway Repair
     runs-on: ubuntu-latest
-    environment: Prod-Migrate
+    # environment: Prod-Migrate
 
     steps:
     - name: Checkout code
@@ -23,8 +23,6 @@ jobs:
 
     - name: Parse Input
       id: parse-input
-
-    - name: Run Bash Script
       run: |
         input=${{ github.event.inputs.folder_location }}
         input="${input^^}"
