@@ -1,0 +1,19 @@
+name: Manual Trigger Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Custom message'
+        required: true
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Print Message
+        run: echo "Message from the workflow: ${{ github.event.inputs.message }}"
