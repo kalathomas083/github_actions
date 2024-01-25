@@ -1,0 +1,52 @@
+name: Flyway Fix
+
+on:  
+  workflow_dispatch:
+    inputs:
+      folder_location:
+        description: "The folder location where the failure occurred (Ex: EDA_ANALYTICS_PRODUCTION_DB/CORE"
+        required: true          
+
+concurrency: # Prevents duplicate runs
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # cancel-in-progress: true
+
+jobs:
+  flyway-repair:
+    name: Flyway Repair
+    runs-on: ubuntu-latest
+    environment: Prod-Migrate
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Parse Input
+      id: parse-input
+
+    - name: Run Bash Script
+      run: |
+        input=${{ github.event.inputs.folder_location }}
+        input="${input^^}"
+        echo $input
+        
+        # Check if the input contains '/'
+        if [[ $input == */* ]]; then
+            # Extract DATABASE and SCHEMA using string manipulation
+            DATABASE_NAME="${input%%/*}"
+            SCHEMA_NAME="${input#*/}"
+
+            echo "Using DATABASE: $DATABASE"
+            echo "Using SCHEMA: $SCHEMA"
+        else
+            echo "Invalid input format. Expected format: DATABASE/SCHEMA"
+            exit 1
+        fi
+
+        echo "DATABASE_NAME=${DATABASE_NAME}" >> $GITHUB_OUTPUT
+        echo "SCHEMA_NAME=${SCHEMA_NAME}" >> $GITHUB_OUTPUT
+
+    - name: Display changed files
+      run: |
+        echo "Database Name: ${{ steps.parse-input.outputs.DATABASE_NAME }}"
+        echo "Schema Name: ${{ steps.parse-input.outputs.SCHEMA_NAME }}"
