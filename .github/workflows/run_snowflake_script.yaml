@@ -2,16 +2,15 @@ name: Create New Schema
 
 on:  push
 
-jobs:
-    test-variable:
-        runs-on: ubuntu-latest
-        environment: Prod-Migrate
 
-    steps:
-        - name: Checkout code
-        uses: actions/checkout@v2
-        - name: Test Display
-        run: |
-            echo "${{ secrets.SF_PASSWORD }}"
+jobs:
+    test_job:
+      runs-on: ubuntu-latest
+      environment: Prod-Migrate
   
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
   
+        - name: Print Message
+          run: echo "${{ secrets.SF_PASSWORD }}"
