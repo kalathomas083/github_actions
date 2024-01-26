@@ -6,7 +6,7 @@ on:  push
 jobs:
     test_job:
       runs-on: ubuntu-latest
-      environment: Prod-Migrate
+      environment: Migrate
   
       steps:
         - name: Checkout Repository
