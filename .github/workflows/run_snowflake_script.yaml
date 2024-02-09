@@ -19,7 +19,7 @@ jobs:
           run: |
             # the_password=${{ secrets.SF_PASSWORD }}
             the_password="Test"
-            echo the_password
+            echo $the_password
             OUTPUT_VAR=$(python3 .github/src/test_script.py $the_password)
             echo $OUTPUT_VAR
 
