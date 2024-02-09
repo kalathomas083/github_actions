@@ -14,3 +14,9 @@ jobs:
   
         - name: Print Message
           run: echo "${{ secrets.SF_PASSWORD }}"
+
+        - name: Check Python
+          run: |
+            OUTPUT_VAR=$(python3 .github\src\test_script.py ${{ secrets.SF_PASSWORD }})
+            echo $OUTPUT_VAR
+
